@@ -1,3 +1,4 @@
-app:
-    resource: "@AppBundle/Controller/"
+atrapalo_inheritances:
+    resource: "@AtrapaloInheritancesBundle/Controller/"
     type:     annotation
+    prefix:   /
