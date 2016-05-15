@@ -394,4 +394,16 @@ class Member
     {
         return $this->birthdate->diff($date_time)->y;
     }
+
+    /**
+     * Get if a member is dead
+     *
+     * @param DateTime $date_time
+     * @return bool
+     */
+    public function isDead(DateTime $date_time)
+    {
+        $age = $this->getAgeByDate($date_time);
+        return ($age > 99)?true:false;
+    }
 }

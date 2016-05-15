@@ -1,6 +1,10 @@
 parameters:
     atrapalo.inheritances.notary.distributor.class: Atrapalo\InheritancesBundle\Services\Notary\Distributor
+    atrapalo.inheritances.member.nanny.class: Atrapalo\InheritancesBundle\Services\Member\Nanny
 
 services:
     atrapalo.inheritances.notary.distributor:
         class: "%atrapalo.inheritances.notary.distributor.class%"
+        arguments: ['@atrapalo.inheritances.member.nanny']
+    atrapalo.inheritances.member.nanny:
+        class: "%atrapalo.inheritances.member.nanny.class%"
