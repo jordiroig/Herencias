@@ -30,11 +30,7 @@ class Accountant
     public function updateFamilyStatusByDate(Member $member, DateTime $moment)
     {
         if($member->isDead($moment) && $sons = $member->getSons()) {
-            $lands = $member->getLands() + $member->getInheritanceLands();
-            $money = $member->getMoney() + $member->getInheritanceMoney();
-            $properties = $member->getProperties() + $member->getInheritanceProperties();
-
-            $this->distributor->distributeInheritance($member, $lands, $money, $properties);
+            $this->distributor->distributeInheritance($member, $member->getTotalLands(), $member->getTotalMoney(), $member->getTotalProperties());
 
             foreach($sons as $son) {
                 $this->updateFamilyStatusByDate($son, $moment);
@@ -44,4 +40,44 @@ class Accountant
         return $member;
     }
 
+    /**
+     * Get member's total heritage
+     *
+     * @param Member $member
+     * @return int
+     */
+    public function getTotalHeritageByMember(Member $member)
+    {
+        return ($member->getTotalLands() * 300) + $member->getTotalMoney() + ($member->getTotalProperties() * 1000000);
+    }
+
+    /**
+     * Get member's family head
+     * 
+     * @param Member $member
+     * @return Member
+     */
+    public function getFamilyHead(Member $member)
+    {
+        $father = $member->getFather();
+        while($father->getFather() != null) {
+            $father = $father->getFather();
+        }
+        return $father;
+    }
+
+    /**
+     * Get member's total heritage on a given date
+     * 
+     * @param Member $member
+     * @param DateTime $moment
+     * @return int
+     */
+    public function getTotalHeritageByMemberAndDate(Member $member, DateTime $moment)
+    {
+        $head = $this->getFamilyHead($member);
+        
+        $this->updateFamilyStatusByDate($head, $moment);
+        return ($member->isDead($moment))?0:$this->getTotalHeritageByMember($member);
+    }
 }

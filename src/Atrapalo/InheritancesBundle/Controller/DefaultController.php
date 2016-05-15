@@ -14,21 +14,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $manel = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->find(1);
-        $moment = DateTime::createFromFormat('d-m-Y', '01-01-2025');
-        $this->get('atrapalo.inheritances.notary.accountant')->updateFamilyStatusByDate($manel, $moment);
+        $julia = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->find(5);
+        $moment = DateTime::createFromFormat('d-m-Y', '01-01-2075');
+        echo $this->get('atrapalo.inheritances.notary.accountant')->getTotalHeritageByMemberAndDate($julia, $moment)."<br /><br /><br />";
 
-        $sons = $manel->getSons();
-
-        /** @var Member $son */
-        foreach ($sons as $son) {
-            echo $son->getName()." - ".($son->isDead($moment))?"mort":"viu"." - ".$son->getInheritanceMoney()." - ".$son->getInheritanceLands()." - ".$son->getInheritanceProperties()."<br /><br />";
-            if($grandsons = $son->getSons()) {
-                foreach ($grandsons as $grandson) {
-                    echo "&nbsp;&nbsp;&nbsp;".$grandson->getName()." - ".($son->isDead($moment))?"mort":"viu"." - ".$grandson->getInheritanceMoney()." - ".$grandson->getInheritanceLands()." - ".$grandson->getInheritanceProperties()."<br /><br />";
-                }
-            }
-        }
         return $this->render('AtrapaloInheritancesBundle:Default:index.html.twig');
     }
 }

@@ -387,23 +387,53 @@ class Member
     /**
      * Get member age in a given date
      * 
-     * @param DateTime $date_time
+     * @param DateTime $date
      * @return int
      */
-    public function getAgeByDate(DateTime $date_time)
+    public function getAgeByDate(DateTime $date)
     {
-        return $this->birthdate->diff($date_time)->y;
+        return $this->birthdate->diff($date)->y;
     }
 
     /**
      * Get if a member is dead
      *
-     * @param DateTime $date_time
+     * @param DateTime $date
      * @return bool
      */
-    public function isDead(DateTime $date_time)
+    public function isDead(DateTime $date)
     {
-        $age = $this->getAgeByDate($date_time);
+        $age = $this->getAgeByDate($date);
         return ($age > 99)?true:false;
+    }
+
+    /**
+     * Get member's total lands
+     * 
+     * @return int
+     */
+    public function getTotalLands()
+    {
+        return $this->getLands() + $this->getInheritanceLands();
+    }
+
+    /**
+     * Get member's total money
+     * 
+     * @return float
+     */
+    public function getTotalMoney()
+    {
+        return $this->getMoney() + $this->getInheritanceMoney();
+    }
+
+    /**
+     * Get member's total properties
+     * 
+     * @return int
+     */
+    public function getTotalProperties()
+    {
+        return $this->getProperties() + $this->getInheritanceProperties();
     }
 }
