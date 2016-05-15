@@ -33,8 +33,13 @@ class ApiController extends FOSRestController
         $moment = DateTime::createFromFormat('d-m-Y', $date);
 
         if($member instanceof Member && $moment instanceof DateTime) {
-            $heritage = $this->get('atrapalo.inheritances.notary.accountant')->getTotalHeritageByMemberAndDate($member, $moment);
-            return new JsonResponse($heritage);
+            $result = array();
+            $result['name'] = $member->getName();
+            $result['age'] = $member->getAgeByDate($moment);
+            $result['alive'] = ($member->isDead($moment))?false:true;
+            $result['heritage'] = $this->get('atrapalo.inheritances.notary.accountant')->getTotalHeritageByMemberAndDate($member, $moment);
+            
+            return new JsonResponse($result);
         }
 
         throw new HttpException(400, "Not found");
