@@ -88,7 +88,7 @@ class Distributor
                 }
 
                 $grandsons = $son->getSons();
-                if ($grandsons > 0) {
+                if (count($grandsons) > 0) {
                     $grandsons = $this->orderSonsByAge($grandsons);
                     $son_inheritance = ceil($money_inheritance / 2);
                     $son->addInheritanceMoney($son_inheritance);
