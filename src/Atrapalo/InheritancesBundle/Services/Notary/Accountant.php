@@ -77,15 +77,12 @@ class Accountant
     public function getFamilyHeadAndBranch(Member $member)
     {
         $branch = new ArrayCollection();
+        $father = ($member->getFather())?$member->getFather():$member;
 
-        $father = $member->getFather();
         $branch->add($father);
-
-        if($father) {
-            while ($father->getFather() != null) {
-                $father = $father->getFather();
-                $branch->add($father);
-            }
+        while ($father->getFather() != null) {
+            $father = $father->getFather();
+            $branch->add($father);
         }
 
         return array('head' => $father, 'branch' => $branch);
