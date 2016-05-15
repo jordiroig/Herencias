@@ -30,7 +30,7 @@ class ApiController extends FOSRestController
     public function getTweetsAction($name, $date)
     {
         $member = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->findOneBy(array('name' => $name));
-        $moment = DateTime::createFromFormat('dd-mm-YYYY', $date);
+        $moment = DateTime::createFromFormat('d-m-Y', $date);
 
         if($member instanceof Member && $moment instanceof DateTime) {
             $heritage = $this->get('atrapalo.inheritances.notary.accountant')->getTotalHeritageByMemberAndDate($member, $moment);
