@@ -392,7 +392,7 @@ class Member
      */
     public function getAgeByDate(DateTime $date)
     {
-        return $this->birthdate->diff($date)->y;
+        return ($date > $this->birthdate)?$this->birthdate->diff($date)->y:0;
     }
 
     /**
@@ -404,7 +404,7 @@ class Member
     public function isDead(DateTime $date)
     {
         $age = $this->getAgeByDate($date);
-        return ($age > 99)?true:false;
+        return ($age > 99 || $age < 1)?true:false;
     }
 
     /**
