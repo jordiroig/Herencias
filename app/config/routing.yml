@@ -1,4 +1,4 @@
 atrapalo_inheritances:
     resource: "@AtrapaloInheritancesBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /v1
