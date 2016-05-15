@@ -12,6 +12,9 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $manel = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->find(1);
+        $this->get('atrapalo.inheritances.notary.distributor')->distributeInheritance($manel);
+        
         return $this->render('AtrapaloInheritancesBundle:Default:index.html.twig');
     }
 }

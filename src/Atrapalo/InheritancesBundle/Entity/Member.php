@@ -61,6 +61,11 @@ class Member
     private $lands = 0;
 
     /**
+     * @var integer
+     */
+    private $inheritance_lands = 0;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="money", type="decimal", precision=10, scale=0, nullable=false, options={"default":0})
@@ -68,11 +73,21 @@ class Member
     private $money = 0;
 
     /**
+     * @var float
+     */
+    private $inheritance_money = 0;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="properties", type="integer", nullable=false, options={"default":0})
      */
     private $properties = 0;
+
+    /**
+     * @var integer
+     */
+    private $inheritance_properties = 0;
 
     /**
      * Constructor
@@ -237,7 +252,7 @@ class Member
      * Set money
      *
      * @param float $money
-     * @return $this
+     * @return Member
      */
     public function setMoney($money)
     {
@@ -259,11 +274,124 @@ class Member
      * Set properties
      *
      * @param int $properties
-     * @return $this
+     * @return Member
      */
     public function setProperties($properties)
     {
         $this->properties = $properties;
         return $this;
+    }
+
+    /**
+     * Get inheritance_lands
+     *
+     * @return int
+     */
+    public function getInheritanceLands()
+    {
+        return $this->inheritance_lands;
+    }
+
+    /**
+     * Set inheritance_lands
+     *
+     * @param int $inheritance_lands
+     * @return Member
+     */
+    public function setInheritanceLands($inheritance_lands)
+    {
+        $this->inheritance_lands = $inheritance_lands;
+        return $this;
+    }
+
+    /**
+     * Add inheritance_lands
+     *
+     * @param $inheritance_lands
+     * @return Member
+     */
+    public function addInheritanceLands($inheritance_lands)
+    {
+        $this->inheritance_lands = $this->inheritance_lands + $inheritance_lands;
+        return $this;
+    }
+
+    /**
+     * Get inheritance_money
+     *
+     * @return float
+     */
+    public function getInheritanceMoney()
+    {
+        return $this->inheritance_money;
+    }
+
+    /**
+     * Set inheritance_money
+     *
+     * @param float $inheritance_money
+     * @return Member
+     */
+    public function setInheritanceMoney($inheritance_money)
+    {
+        $this->inheritance_money = $inheritance_money;
+        return $this;
+    }
+
+    /**
+     * Add inheritance_money
+     *
+     * @param $inheritance_money
+     * @return Member
+     */
+    public function addInheritanceMoney($inheritance_money)
+    {
+        $this->inheritance_money = $this->inheritance_money + $inheritance_money;
+        return $this;
+    }
+
+    /**
+     * Get inheritance_properties
+     *
+     * @return int
+     */
+    public function getInheritanceProperties()
+    {
+        return $this->inheritance_properties;
+    }
+
+    /**
+     * Set inheritance_properties
+     *
+     * @param int $inheritance_properties
+     * @return Member
+     */
+    public function setInheritanceProperties($inheritance_properties)
+    {
+        $this->inheritance_properties = $inheritance_properties;
+        return $this;
+    }
+
+    /**
+     * Add inheritance_properties
+     *
+     * @param $inheritance_properties
+     * @return Member
+     */
+    public function addInheritanceProperties($inheritance_properties)
+    {
+        $this->inheritance_properties = $this->inheritance_properties + $inheritance_properties;
+        return $this;
+    }
+
+    /**
+     * Get member age in a given date
+     * 
+     * @param DateTime $date_time
+     * @return int
+     */
+    public function getAgeByDate(DateTime $date_time)
+    {
+        return $this->birthdate->diff($date_time)->y;
     }
 }

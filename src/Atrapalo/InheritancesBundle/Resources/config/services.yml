@@ -1,4 +1,6 @@
+parameters:
+    atrapalo.inheritances.notary.distributor.class: Atrapalo\InheritancesBundle\Services\Notary\Distributor
+
 services:
-#    atrapalo_inheritances.example:
-#        class: Atrapalo\InheritancesBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    atrapalo.inheritances.notary.distributor:
+        class: "%atrapalo.inheritances.notary.distributor.class%"
