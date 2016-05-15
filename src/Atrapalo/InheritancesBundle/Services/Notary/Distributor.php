@@ -87,8 +87,8 @@ class Distributor
                 $money_inheritance = $money_son;
             }
 
-            /** @var ArrayCollection $grandsons */
             if($grandsons = $son->getSons()) {
+                $grandsons = $this->orderSonsByAge($grandsons);
                 $son_inheritance = ceil($money_inheritance / 2);
                 $son->addInheritanceMoney($son_inheritance);
                 $grandsons_inheritance = floor($money_inheritance / 2);
