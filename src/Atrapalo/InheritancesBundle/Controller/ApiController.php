@@ -8,7 +8,6 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ApiController extends FOSRestController
 {
@@ -32,16 +31,18 @@ class ApiController extends FOSRestController
         $member = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->findOneBy(array('name' => $name));
         $moment = DateTime::createFromFormat('d-m-Y', $date);
 
+        $result = array();
         if($member instanceof Member && $moment instanceof DateTime) {
-            $result = array();
             $result['name'] = $member->getName();
             $result['age'] = $member->getAgeByDate($moment);
             $result['alive'] = ($member->isDead($moment))?false:true;
             $result['heritage'] = $this->get('atrapalo.inheritances.notary.accountant')->getTotalHeritageByMemberAndDate($member, $moment);
-            
-            return new JsonResponse($result);
+        }
+        else {
+            $result['error'] = '400';
+            $result['error_text'] = 'Not found';
         }
 
-        throw new HttpException(400, "Not found");
+        return new JsonResponse($result);
     }
 }
