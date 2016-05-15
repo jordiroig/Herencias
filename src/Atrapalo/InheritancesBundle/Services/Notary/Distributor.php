@@ -75,29 +75,30 @@ class Distributor
     private function distributeMoney(ArrayCollection $sons, $money)
     {
         $sons_number = count($sons);
-        $money_son = floor($money / $sons_number);
-        $money_rest = ($money % $sons_number);
-        /** @var Member $son */
-        foreach ($sons as $son) {
-            if ($money_rest > 0) {
-                $money_inheritance = $money_son + 1;
-                $money_rest--;
-            }
-            else {
-                $money_inheritance = $money_son;
-            }
-
-            if($grandsons = $son->getSons()) {
-                $grandsons = $this->orderSonsByAge($grandsons);
-                $son_inheritance = ceil($money_inheritance / 2);
-                $son->addInheritanceMoney($son_inheritance);
-                $grandsons_inheritance = floor($money_inheritance / 2);
-                if($grandsons_inheritance) {
-                    $this->distributeMoney($grandsons, $grandsons_inheritance);
+        if($sons_number > 0) {
+            $money_son = floor($money / $sons_number);
+            $money_rest = ($money % $sons_number);
+            /** @var Member $son */
+            foreach ($sons as $son) {
+                if ($money_rest > 0) {
+                    $money_inheritance = $money_son + 1;
+                    $money_rest--;
+                } else {
+                    $money_inheritance = $money_son;
                 }
-            }
-            else {
-                $son->addInheritanceMoney($money_inheritance);
+
+                $grandsons = $son->getSons();
+                if ($grandsons > 0) {
+                    $grandsons = $this->orderSonsByAge($grandsons);
+                    $son_inheritance = ceil($money_inheritance / 2);
+                    $son->addInheritanceMoney($son_inheritance);
+                    $grandsons_inheritance = floor($money_inheritance / 2);
+                    if ($grandsons_inheritance > 0) {
+                        $this->distributeMoney($grandsons, $grandsons_inheritance);
+                    }
+                } else {
+                    $son->addInheritanceMoney($money_inheritance);
+                }
             }
         }
     }
