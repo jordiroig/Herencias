@@ -17,6 +17,7 @@ class Distributor
     public function distributeInheritance(Member $member, $lands = 0, $money = 0, $properties = 0)
     {
         $sons = $member->getSons();
+
         if(count($sons)) {
             //We must order the sons by its age(desc)
             $sons = $this->orderSonsByAge($sons);
@@ -39,6 +40,11 @@ class Distributor
             /** @var Member $son */
             foreach ($sons as $son) {
                 echo $son->getName()." - ".$son->getInheritanceMoney()." - ".$son->getInheritanceLands()." - ".$son->getInheritanceProperties()."<br /><br />";
+                if($grandsons = $son->getSons()) {
+                    foreach ($grandsons as $grandson) {
+                        echo "&nbsp;&nbsp;&nbsp;".$grandson->getName()." - ".$grandson->getInheritanceMoney()." - ".$grandson->getInheritanceLands()." - ".$grandson->getInheritanceProperties()."<br /><br />";
+                    }
+                }
             }
         }
     }
@@ -60,6 +66,12 @@ class Distributor
         return new ArrayCollection(iterator_to_array($iterator));
     }
 
+    /**
+     * Distribute money to the sons of a member
+     *
+     * @param ArrayCollection $sons
+     * @param $money
+     */
     private function distributeMoney(ArrayCollection $sons, $money)
     {
         $sons_number = count($sons);
@@ -67,15 +79,35 @@ class Distributor
         $money_rest = ($money % $sons_number);
         /** @var Member $son */
         foreach ($sons as $son) {
-            $rest = 0;
             if ($money_rest > 0) {
-                $rest = 1;
+                $money_inheritance = $money_son + 1;
                 $money_rest--;
             }
-            $son->addInheritanceMoney($money_son + $rest);
+            else {
+                $money_inheritance = $money_son;
+            }
+
+            /** @var ArrayCollection $grandsons */
+            if($grandsons = $son->getSons()) {
+                $son_inheritance = ceil($money_inheritance / 2);
+                $son->addInheritanceMoney($son_inheritance);
+                $grandsons_inheritance = floor($money_inheritance / 2);
+                if($grandsons_inheritance) {
+                    $this->distributeMoney($grandsons, $grandsons_inheritance);
+                }
+            }
+            else {
+                $son->addInheritanceMoney($money_inheritance);
+            }
         }
     }
 
+    /**
+     * Distribute lands to the sons of a member
+     *
+     * @param ArrayCollection $sons
+     * @param $lands
+     */
     private function distributeLands(ArrayCollection $sons, $lands)
     {
         /** @var Member $oldest_son */
@@ -83,6 +115,12 @@ class Distributor
         $oldest_son->addInheritanceLands($lands);
     }
 
+    /**
+     * Distribute properties to the sons of a member
+     *
+     * @param array $sons_array
+     * @param $properties
+     */
     private function distributeProperties(Array $sons_array, $properties)
     {
         $sons_array = array_reverse($sons_array);
