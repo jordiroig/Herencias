@@ -86,7 +86,7 @@ class Accountant
             $branch->add($father);
         }
 
-        return array('father' => $father, 'branch' => $branch);
+        return array('head' => $father, 'branch' => $branch);
     }
 
     /**
