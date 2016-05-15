@@ -81,9 +81,11 @@ class Accountant
         $father = $member->getFather();
         $branch->add($father);
 
-        while($father->getFather() != null) {
-            $father = $father->getFather();
-            $branch->add($father);
+        if($father) {
+            while ($father->getFather() != null) {
+                $father = $father->getFather();
+                $branch->add($father);
+            }
         }
 
         return array('head' => $father, 'branch' => $branch);
