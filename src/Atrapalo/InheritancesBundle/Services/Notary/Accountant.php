@@ -4,6 +4,7 @@ namespace Atrapalo\InheritancesBundle\Services\Notary;
 
 use Atrapalo\InheritancesBundle\Entity\Member;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Accountant
 {
@@ -25,15 +26,16 @@ class Accountant
      *
      * @param Member $member
      * @param DateTime $moment
+     * @param ArrayCollection $branch
      * @return Member
      */
-    public function updateFamilyStatusByDate(Member $member, DateTime $moment)
+    public function updateFamilyStatusByDate(Member $member, DateTime $moment, ArrayCollection $branch = null)
     {
         if($member->isDead($moment) && $sons = $member->getSons()) {
             $this->distributor->distributeInheritance($member, $member->getTotalLands(), $member->getTotalMoney(), $member->getTotalProperties());
 
             foreach($sons as $son) {
-                $this->updateFamilyStatusByDate($son, $moment);
+                if($branch && $branch->contains($son)) $this->updateFamilyStatusByDate($son, $moment);
             }
         }
 
@@ -67,6 +69,27 @@ class Accountant
     }
 
     /**
+     * Get member's family head and branch
+     *
+     * @param Member $member
+     * @return array
+     */
+    public function getFamilyHeadAndBranch(Member $member)
+    {
+        $branch = new ArrayCollection();
+
+        $father = $member->getFather();
+        $branch->add($father);
+
+        while($father->getFather() != null) {
+            $father = $father->getFather();
+            $branch->add($father);
+        }
+
+        return array('father' => $father, 'branch' => $branch);
+    }
+
+    /**
      * Get member's total heritage on a given date
      * 
      * @param Member $member
@@ -75,9 +98,11 @@ class Accountant
      */
     public function getTotalHeritageByMemberAndDate(Member $member, DateTime $moment)
     {
-        $head = $this->getFamilyHead($member);
-        
-        $this->updateFamilyStatusByDate($head, $moment);
+        $head_and_branch = $this->getFamilyHeadAndBranch($member);
+        $head = $head_and_branch['head'];
+        $branch = $head_and_branch['branch'];
+
+        $this->updateFamilyStatusByDate($head, $moment, $branch);
         return ($member->isDead($moment))?0:$this->getTotalHeritageByMember($member);
     }
 }
