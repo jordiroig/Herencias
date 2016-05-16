@@ -122,45 +122,19 @@ class AccountantTest extends PHPUnit_Framework_TestCase
 
     public function testGetTotalHeritageByMemberAndDate()
     {
-        $father = new Member();
-        $father ->setName('father')
+        $member = new Member();
+        $member ->setName('member')
             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'))
             ->setLands(2)
             ->setMoney(1000)
             ->setProperties(4);
 
-        $son1 = new Member();
-        $son1->setName('son1')
-            ->setFather($father)
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1995'));
-        $son2 = new Member();
-        $son2->setName('son2')
-            ->setFather($father)
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1998'));
-
-        $sons = new ArrayCollection(array($son1, $son2));
-        $father->setSons($sons);
-
-        $grandson1 = new Member();
-        $grandson1->setName('grandson1')
-            ->setFather($son1)
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2015'));
-
-        $son1->addSon($grandson1);
-
-        $grandson2 = new Member();
-        $grandson2->setName('grandson2')
-            ->setFather($son2)
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2014'));
-
-        $son2->addSon($grandson2);
-
         $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
         /** @var Distributor $distributor */
         $accountant = new Accountant($distributor);
 
-        $result = $accountant->getTotalHeritageByMemberAndDate($grandson1, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
+        $result = $accountant->getTotalHeritageByMemberAndDate($member, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
 
-        $this->assertEquals(2001100, $result);
+        $this->assertEquals(0, $result); //Member is dead
     }
 }
