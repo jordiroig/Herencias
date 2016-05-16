@@ -113,11 +113,13 @@ class Member
      * @param DateTime $birthdate
      * @return Member
      */
-    public function setBirthdate($birthdate)
+    public function setBirthdate(DateTime $birthdate)
     {
-        $this->birthdate = $birthdate;
-
-        return $this;
+        if(!$this->getFather() || ($this->getFather() && $this->getFather()->getBirthdate() < $birthdate)) {
+            $this->birthdate = $birthdate;
+            return $this;
+        }
+        return false;
     }
 
     /**
@@ -161,8 +163,11 @@ class Member
      */
     public function setFather(Member $father)
     {
-        $this->father = $father;
-        return $this;
+        if(!$this->getBirthdate() || ($this->getBirthdate() && $father->getBirthdate() < $this->getBirthdate())) {
+            $this->father = $father;
+            return $this;
+        }
+        return false;
     }
     /**
      * Get father
@@ -193,9 +198,11 @@ class Member
      */
     public function addSon(Member $son)
     {
-        $son->setFather($this);
-        $this->getSons()->add($son);
-        return $this;
+        if($son->setFather($this)) {
+            $this->sons->add($son);
+            return $this;
+        }
+        return false;
     }
     /**
      * Remove son
