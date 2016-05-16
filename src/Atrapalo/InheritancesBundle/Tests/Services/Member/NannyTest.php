@@ -13,17 +13,14 @@ class NannyTest extends AbstractTest
     public function testOrderSonsByAge()
     {
         $son1 = new Member();
-        $son1
-            ->setName('son1')
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'));
+        $son1->setName('son1')
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'));
         $son2 = new Member();
-        $son2
-            ->setName('son2')
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1985'));
+        $son2->setName('son2')
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1985'));
         $son3 = new Member();
-        $son3
-            ->setName('son3')
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1980'));
+        $son3->setName('son3')
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1980'));
 
         $sons = new ArrayCollection();
         $sons->add($son1);
@@ -31,8 +28,10 @@ class NannyTest extends AbstractTest
         $sons->add($son3);
 
         $nanny = new Nanny();
-        $result = $nanny->orderSonsByAge($sons);
-        die(var_dump($result));
+        $ordered_sons = $nanny->orderSonsByAge($sons);
+
+        $this->assertTrue($ordered_sons[0]->getBirthdate < $ordered_sons[1]->getBirthdate);
+        $this->assertTrue($ordered_sons[1]->getBirthdate < $ordered_sons[2]->getBirthdate);
+        $this->assertTrue($ordered_sons[2]->getBirthdate < $ordered_sons[3]->getBirthdate);
     }
-    
 }
