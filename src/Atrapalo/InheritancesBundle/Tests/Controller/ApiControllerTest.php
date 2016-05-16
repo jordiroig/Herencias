@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApiControllerTest extends WebTestCase
 {
-    public function testGetTweetsAction()
+    public function testGetHeritage()
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/v1/heritage/julia/01-01-2075');
