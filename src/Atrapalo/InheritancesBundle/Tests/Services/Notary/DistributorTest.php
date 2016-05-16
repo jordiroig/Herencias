@@ -43,9 +43,8 @@ class DistributorTest extends AbstractTest
         $grandsons = new ArrayCollection(array($grandson1));
         $son1->setSons($grandsons);
 
-        $nanny = $this->mockObjectWith('Atrapalo\InheritancesBundle\Services\Member\Nanny', [
-            ['method' => 'OrderSonsByAge', 'times' => 1, 'with' => $sons, 'return' => $sons],
-            ['method' => 'OrderSonsByAge', 'times' => 1, 'with' => $grandsons, 'return' => $grandsons]
+        $nanny = $this->mockObject('Atrapalo\InheritancesBundle\Services\Member\Nanny', [
+            ['method' => 'OrderSonsByAge', 'times' => 2, 'return' => $this->onConsecutiveCalls($sons, $grandsons)]
         ]);
 
         $distributor = new Distributor($nanny);
