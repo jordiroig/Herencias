@@ -159,7 +159,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
         /** @var Distributor $distributor */
         $accountant = new Accountant($distributor);
 
-        $result = $accountant->getTotalHeritageByMemberAndDate($son1, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
+        $result = $accountant->getTotalHeritageByMemberAndDate($grandson1, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
 
         $this->assertEquals(2001100, $result);
     }
