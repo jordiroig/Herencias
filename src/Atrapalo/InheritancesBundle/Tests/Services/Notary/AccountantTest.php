@@ -13,13 +13,6 @@ class AccountantTest extends PHPUnit_Framework_TestCase
 {
     public function testUpdateFamilyStatusByDate()
     {
-        $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
-        $distributor
-            ->expects($this->exactly(3))
-            ->method('distributeInheritance');
-        /** @var Distributor $distributor */
-        $accountant = new Accountant($distributor);
-
         $father = new Member();
         $father ->setName('father')
             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'));
@@ -31,7 +24,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
         $son2 = new Member();
         $son2->setName('son2')
             ->setFather($father)
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1996'));
+            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1998'));
 
         $sons = new ArrayCollection(array($son1, $son2));
         $father->setSons($sons);
@@ -50,7 +43,14 @@ class AccountantTest extends PHPUnit_Framework_TestCase
 
         $son2->addSon($grandson2);
 
-        $accountant->updateFamilyStatusByDate($father, DateTime::createFromFormat('d-m-Y', '01-01-2110'));
+        $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
+        $distributor
+            ->expects($this->exactly(2))
+            ->method('distributeInheritance');
+        /** @var Distributor $distributor */
+        $accountant = new Accountant($distributor);
+
+        $accountant->updateFamilyStatusByDate($father, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
     }
 
     public function testGetTotalHeritageByMember()
