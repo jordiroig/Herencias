@@ -30,8 +30,8 @@ class NannyTest extends AbstractTest
         $nanny = new Nanny();
         $ordered_sons = $nanny->orderSonsByAge($sons);
 
-        $this->assertTrue($ordered_sons[0]->getBirthdate() < $ordered_sons[1]->getBirthdate());
-        $this->assertTrue($ordered_sons[1]->getBirthdate() < $ordered_sons[2]->getBirthdate());
-        $this->assertTrue($ordered_sons[2]->getBirthdate() < $ordered_sons[3]->getBirthdate());
+        $this->assertTrue($ordered_sons[0]->getBirthdate() > $ordered_sons[1]->getBirthdate());
+        $this->assertTrue($ordered_sons[1]->getBirthdate() > $ordered_sons[2]->getBirthdate());
+        $this->assertTrue($ordered_sons[2]->getBirthdate() > $ordered_sons[3]->getBirthdate());
     }
 }
