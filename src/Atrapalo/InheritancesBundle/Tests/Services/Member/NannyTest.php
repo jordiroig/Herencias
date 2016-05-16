@@ -14,18 +14,22 @@ class NannyTest extends AbstractTest
     {
         $son1 = new Member();
         $son1->setName('son1')
-             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'));
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1995'));
         $son2 = new Member();
         $son2->setName('son2')
-             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1985'));
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1980'));
         $son3 = new Member();
         $son3->setName('son3')
-             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1980'));
+             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1990'));
+        $son4 = new Member();
+        $son4->setName('son4')
+            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1985'));
 
         $sons = new ArrayCollection();
         $sons->add($son1);
         $sons->add($son2);
         $sons->add($son3);
+        $sons->add($son4);
 
         $nanny = new Nanny();
         $ordered_sons = $nanny->orderSonsByAge($sons);
