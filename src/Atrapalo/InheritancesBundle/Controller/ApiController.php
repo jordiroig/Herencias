@@ -26,7 +26,7 @@ class ApiController extends FOSRestController
      * @param $date
      * @return JsonResponse
      */
-    public function getTweetsAction($name, $date)
+    public function getHeritage($name, $date)
     {
         $member = $this->getDoctrine()->getRepository('AtrapaloInheritancesBundle:Member')->findOneBy(array('name' => $name));
         $moment = DateTime::createFromFormat('d-m-Y', $date);
