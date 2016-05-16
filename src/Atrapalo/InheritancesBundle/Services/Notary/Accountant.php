@@ -54,21 +54,6 @@ class Accountant
     }
 
     /**
-     * Get member's family head
-     * 
-     * @param Member $member
-     * @return Member
-     */
-    public function getFamilyHead(Member $member)
-    {
-        $father = $member->getFather();
-        while($father->getFather() != null) {
-            $father = $father->getFather();
-        }
-        return $father;
-    }
-
-    /**
      * Get member's family head and branch
      *
      * @param Member $member

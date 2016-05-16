@@ -30,7 +30,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3001600, $result);
     }
 
-    public function testGetFamilyHead()
+    public function testGetFamilyHeadAndBranch()
     {
         $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
         /** @var Distributor $distributor */
@@ -57,8 +57,9 @@ class AccountantTest extends PHPUnit_Framework_TestCase
 
         $son->addSon($grandson);
 
-        $result = $accountant->getFamilyHead($grandson);
+        $result = $accountant->getFamilyHeadAndBranch($grandson);
 
-        $this->assertEquals($grandfather, $result);
+        $this->assertEquals($grandfather, $result['head']);
+        $this->assertEquals(array($son, $father, $grandfather), $result['branch']);
     }
 }
