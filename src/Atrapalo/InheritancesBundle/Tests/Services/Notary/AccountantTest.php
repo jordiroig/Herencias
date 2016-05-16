@@ -5,6 +5,7 @@ namespace Atrapalo\InheritancesBundle\Tests\Services\Notary;
 use Atrapalo\InheritancesBundle\Entity\Member;
 use Atrapalo\InheritancesBundle\Services\Notary\Accountant;
 use Atrapalo\InheritancesBundle\Services\Notary\Distributor;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit_Framework_TestCase;
 
 class AccountantTest extends PHPUnit_Framework_TestCase
@@ -60,6 +61,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
         $result = $accountant->getFamilyHeadAndBranch($grandson);
 
         $this->assertEquals($grandfather, $result['head']);
-        $this->assertEquals(array($son, $father, $grandfather), $result['branch']);
+        $expected = new ArrayCollection(array($son, $father, $grandfather));
+        $this->assertEquals($expected, $result['branch']);
     }
 }
