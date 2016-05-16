@@ -9,9 +9,9 @@ class ApiControllerTest extends WebTestCase
     public function testGetHeritage()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/v1/heritage/julia/01-01-2075');
+        $client->request('GET', '/v1/heritage/julia/01-01-2075');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        die($crawler->html());
+        $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'), $client->getResponse()->headers);
     }
 
 }
