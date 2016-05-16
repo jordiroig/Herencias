@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class DistributorTest extends AbstractTest
 {
-
     public function testdistributeProperties()
     {
         $father = new Member();
@@ -43,8 +42,20 @@ class DistributorTest extends AbstractTest
         $distributor = new Distributor($nanny);
         $distributor->distributeInheritance($father, $father->getLands(), $father->getMoney(), $father->getProperties());
 
+        //Oldest son
+        $this->assertEquals(2, $son1->getInheritanceLands());
+        $this->assertEquals(334, $son1->getInheritanceMoney());
+        $this->assertEquals(2, $son1->getInheritanceProperties());
 
-        die(var_dump($son1));
+        //Middle son
+        $this->assertEquals(0, $son2->getInheritanceLands());
+        $this->assertEquals(333, $son2->getInheritanceMoney());
+        $this->assertEquals(1, $son2->getInheritanceProperties());
+
+        //Youngest son
+        $this->assertEquals(0, $son3->getInheritanceLands());
+        $this->assertEquals(333, $son3->getInheritanceMoney());
+        $this->assertEquals(1, $son3->getInheritanceProperties());
     }
 
 
