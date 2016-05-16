@@ -29,9 +29,14 @@ class NannyTest extends AbstractTest
 
         $nanny = new Nanny();
         $ordered_sons = $nanny->orderSonsByAge($sons);
-
-        $this->assertTrue($ordered_sons[0]->getBirthdate() > $ordered_sons[1]->getBirthdate());
-        $this->assertTrue($ordered_sons[1]->getBirthdate() > $ordered_sons[2]->getBirthdate());
-        $this->assertTrue($ordered_sons[2]->getBirthdate() > $ordered_sons[3]->getBirthdate());
+        
+        $previous = null;
+        /** @var Member $ordered_son */
+        foreach ($ordered_sons as $ordered_son) {
+            if($previous instanceof Member) {
+                $this->assertTrue($previous->getBirthdate() < $ordered_son->getBirthdate());
+            }
+            $previous = $ordered_son;
+        }
     }
 }
