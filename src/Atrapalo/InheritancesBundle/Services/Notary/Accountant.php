@@ -35,7 +35,7 @@ class Accountant
             $this->distributor->distributeInheritance($member, $member->getTotalLands(), $member->getTotalMoney(), $member->getTotalProperties());
 
             foreach($sons as $son) {
-                if($branch && $branch->contains($son)) $this->updateFamilyStatusByDate($son, $moment);
+                if(!$branch || ($branch && $branch->contains($son))) $this->updateFamilyStatusByDate($son, $moment);
             }
         }
 
