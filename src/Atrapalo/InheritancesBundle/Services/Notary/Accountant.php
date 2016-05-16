@@ -31,11 +31,12 @@ class Accountant
      */
     public function updateFamilyStatusByDate(Member $member, DateTime $moment, ArrayCollection $branch = null)
     {
-        if($member->isDead($moment) && $sons = $member->getSons()) {
+        $sons = $member->getSons();
+        if($member->isDead($moment) && count($sons)>0) {
             $this->distributor->distributeInheritance($member, $member->getTotalLands(), $member->getTotalMoney(), $member->getTotalProperties());
 
             foreach($sons as $son) {
-                if(!$branch || ($branch && $branch->contains($son))) $this->updateFamilyStatusByDate($son, $moment);
+                if(!$branch || ($branch && $branch->contains($son))) $this->updateFamilyStatusByDate($son, $moment, $branch);
             }
         }
 
