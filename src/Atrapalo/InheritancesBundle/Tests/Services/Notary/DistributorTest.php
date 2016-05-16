@@ -11,7 +11,7 @@ use PHPUnit_Framework_TestCase;
 
 class DistributorTest extends PHPUnit_Framework_TestCase
 {
-    public function testdistributeProperties()
+    public function testdistributePropertiesWithSonsandGrandsons()
     {
         $father = new Member();
         $father ->setName('father')
@@ -41,7 +41,12 @@ class DistributorTest extends PHPUnit_Framework_TestCase
                   ->setFather($son1)
                   ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2015'));
 
-        $grandsons = new ArrayCollection(array($grandson1));
+        $grandson2 = new Member();
+        $grandson2->setName('grandson2')
+            ->setFather($son1)
+            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2016'));
+
+        $grandsons = new ArrayCollection(array($grandson1, $grandson2));
         $son1->setSons($grandsons);
 
         $nanny = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Member\Nanny')->disableOriginalConstructor()->getMock();
@@ -68,9 +73,14 @@ class DistributorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(333, $son3->getInheritanceMoney());
         $this->assertEquals(1, $son3->getInheritanceProperties());
 
-        //Grandson
+        //Oldest grandson
         $this->assertEquals(0, $grandson1->getInheritanceLands());
-        $this->assertEquals(167, $grandson1->getInheritanceMoney());
+        $this->assertEquals(84, $grandson1->getInheritanceMoney());
         $this->assertEquals(0, $grandson1->getInheritanceProperties());
+
+        //Youngest grandson
+        $this->assertEquals(0, $grandson2->getInheritanceLands());
+        $this->assertEquals(83, $grandson2->getInheritanceMoney());
+        $this->assertEquals(0, $grandson2->getInheritanceProperties());
     }
 }
