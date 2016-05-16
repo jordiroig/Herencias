@@ -15,17 +15,14 @@ class AccountantTest extends PHPUnit_Framework_TestCase
     {
         $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
         $distributor
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('distributeInheritance');
         /** @var Distributor $distributor */
         $accountant = new Accountant($distributor);
 
         $father = new Member();
         $father ->setName('father')
-            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'))
-            ->setLands(2)
-            ->setMoney(1000)
-            ->setProperties(4);
+            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1975'));
 
         $son1 = new Member();
         $son1->setName('son1')
@@ -44,8 +41,14 @@ class AccountantTest extends PHPUnit_Framework_TestCase
             ->setFather($son1)
             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2015'));
 
-        $grandsons = new ArrayCollection(array($grandson1));
-        $son1->setSons($grandsons);
+        $son1->addSon($grandson1);
+
+        $grandson2 = new Member();
+        $grandson2->setName('grandson2')
+            ->setFather($son2)
+            ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-2014'));
+
+        $son2->addSon($grandson2);
 
         $accountant->updateFamilyStatusByDate($father, DateTime::createFromFormat('d-m-Y', '01-01-2110'));
     }
