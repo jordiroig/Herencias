@@ -4,11 +4,11 @@ namespace Atrapalo\InheritancesBundle\Tests\Services\Member;
 
 use Atrapalo\InheritancesBundle\Entity\Member;
 use Atrapalo\InheritancesBundle\Services\Member\Nanny;
-use Atrapalo\InheritancesBundle\Tests\Abstracts\AbstractTest;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit_Framework_TestCase;
 
-class NannyTest extends AbstractTest
+class NannyTest extends PHPUnit_Framework_TestCase
 {
     public function testOrderSonsByAge()
     {
