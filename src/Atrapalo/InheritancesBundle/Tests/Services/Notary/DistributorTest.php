@@ -33,8 +33,11 @@ class DistributorTest extends AbstractTest
             ->setFather($father)
             ->setBirthdate(DateTime::createFromFormat('d-m-Y', '01-01-1997'));
 
+        $sons = new ArrayCollection(array($son1, $son2, $son3));
+        $father->setSons($sons);
+
         $nanny = $this->mockObject('Atrapalo\InheritancesBundle\Services\Member\Nanny', [
-            ['method' => 'OrderSonsByAge', 'times' => 1, 'return' => new ArrayCollection(array($son1, $son2, $son3))]
+            ['method' => 'OrderSonsByAge', 'times' => 1, 'return' => $sons]
         ]);
 
         $distributor = new Distributor($nanny);
