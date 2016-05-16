@@ -3,12 +3,13 @@
 namespace Atrapalo\InheritancesBundle\Tests\Notary\Services;
 
 use Atrapalo\InheritancesBundle\Entity\Member;
+use Atrapalo\InheritancesBundle\Services\Member\Nanny;
 use Atrapalo\InheritancesBundle\Services\Notary\Distributor;
-use Atrapalo\InheritancesBundle\Tests\Abstracts\AbstractTest;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit_Framework_TestCase;
 
-class DistributorTest extends AbstractTest
+class DistributorTest extends PHPUnit_Framework_TestCase
 {
     public function testdistributeProperties()
     {
@@ -43,10 +44,12 @@ class DistributorTest extends AbstractTest
         $grandsons = new ArrayCollection(array($grandson1));
         $son1->setSons($grandsons);
 
-        $nanny = $this->mockObject('Atrapalo\InheritancesBundle\Services\Member\Nanny', [
-            ['method' => 'OrderSonsByAge', 'times' => 2, 'return' => $this->onConsecutiveCalls($sons, $grandsons)]
-        ]);
+        $nanny = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Member\Nanny')->disableOriginalConstructor()->getMock();
+        $nanny->expects($this->exactly(2))
+              ->method('OrderSonsByAge')
+              ->will($this->onConsecutiveCalls($sons, $grandsons));
 
+        /** @var Nanny $nanny */
         $distributor = new Distributor($nanny);
         $distributor->distributeInheritance($father, $father->getLands(), $father->getMoney(), $father->getProperties());
 
