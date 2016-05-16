@@ -14,7 +14,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
     public function testUpdateFamilyStatusByDate()
     {
         $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
-        $distributor->expects($this->exactly(2))
+        $distributor->expects($this->exactly(1))
             ->method('distributeInheritance');
         /** @var Distributor $distributor */
         $accountant = new Accountant($distributor);
