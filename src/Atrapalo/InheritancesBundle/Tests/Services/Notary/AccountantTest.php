@@ -43,6 +43,7 @@ class AccountantTest extends PHPUnit_Framework_TestCase
 
         $son2->addSon($grandson2);
 
+        // We test that distributeInheritance method is called twice
         $distributor = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
         $distributor
             ->expects($this->exactly(2))
@@ -51,6 +52,17 @@ class AccountantTest extends PHPUnit_Framework_TestCase
         $accountant = new Accountant($distributor);
 
         $accountant->updateFamilyStatusByDate($father, DateTime::createFromFormat('d-m-Y', '01-01-2096'));
+
+        // Same test but with an specific branch
+        $distributor_branch = $this->getMockBuilder('Atrapalo\InheritancesBundle\Services\Notary\Distributor')->disableOriginalConstructor()->getMock();
+        $distributor_branch
+            ->expects($this->exactly(2))
+            ->method('distributeInheritance');
+        /** @var Distributor $distributor_branch */
+        $accountant_branch = new Accountant($distributor_branch);
+
+        $branch = new ArrayCollection(array($grandson1, $son1, $father));
+        $accountant_branch->updateFamilyStatusByDate($father, DateTime::createFromFormat('d-m-Y', '01-01-2110'), $branch);
     }
 
     public function testGetTotalHeritageByMember()
