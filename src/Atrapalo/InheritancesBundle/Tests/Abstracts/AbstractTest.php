@@ -13,7 +13,7 @@ class AbstractTest extends PHPUnit_Framework_TestCase
         {
             $mocked->expects($this->exactly($param['times']))
                 ->method($param['method'])
-                ->willReturn($param['return']);
+                ->will($param['return']);
         }
         return $mocked;
     }
